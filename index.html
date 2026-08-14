@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clearcheck — Before you post</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #14151A;
+    --bg-panel: #1B1D24;
+    --bg-raise: #21232C;
+    --ink: #EDEAE2;
+    --ink-dim: #8C8E98;
+    --line: #2A2C35;
+    --safe: #5B9E6B;
+    --caution: #D6963C;
+    --risk: #C4483C;
+    --accent: #6E86FF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mono{ font-family:'JetBrains Mono', monospace; letter-spacing: 0.02em; }
+  a{ color: inherit; }
+  button{ font-family: inherit; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    padding: 22px 32px;
+    border-bottom: 1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(20,21,26,0.92);
+    backdrop-filter: blur(8px);
+    z-index: 50;
+  }
+  .wordmark{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size: 21px;
+    letter-spacing: -0.01em;
+    cursor: pointer;
+  }
+  .wordmark span{ color: var(--accent); }
+  .nav-right{ display:flex; align-items:center; gap: 16px; }
+  .nav-user{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    display:flex;
+    align-items:center;
+    gap: 10px;
+  }
+  .nav-btn{
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 13px;
+    padding: 9px 16px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+  }
+  .nav-btn:hover{ border-color: var(--accent); }
+  .nav-btn.primary{
+    background: var(--accent);
+    color: #0F1015;
+    border: none;
+    font-weight: 600;
+  }
+  .nav-btn.primary:hover{ opacity: 0.88; }
+  .nav-btn.ghost{
+    border: none;
+    color: var(--ink-dim);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero-section{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 90px 32px 60px;
+    text-align: center;
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    margin: 0 0 18px;
+  }
+  h1.hero{
+    font-family:'Fraunces', serif;
+    font-size: clamp(34px, 6vw, 58px);
+    font-weight: 600;
+    line-height: 1.05;
+    margin: 0 0 20px;
+    letter-spacing: -0.015em;
+  }
+  h1.hero em{ color: var(--accent); font-style: normal; }
+  .hero-sub{
+    color: var(--ink-dim);
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 52ch;
+    margin: 0 auto 34px;
+  }
+  .hero-cta{ display:flex; gap: 14px; justify-content:center; flex-wrap: wrap; }
+  .btn-big{
+    padding: 15px 28px;
+    border-radius: 3px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-big.primary{ background: var(--accent); color: #0F1015; }
+  .btn-big.primary:hover{ opacity: 0.88; }
+  .btn-big.secondary{ background: none; border: 1px solid var(--line); color: var(--ink); }
+  .btn-big.secondary:hover{ border-color: var(--accent); }
+  .hero-note{
+    margin-top: 18px;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: var(--ink-dim);
+  }
+
+  /* ---------- HOW IT WORKS ---------- */
+  .how-section{
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 780px){ .how-section{ grid-template-columns: 1fr; } }
+  .how-card{
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 22px;
+    background: var(--bg-panel);
+  }
+  .how-num{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .how-title{ font-family:'Fraunces', serif; font-size: 18px; font-weight: 600; margin: 0 0 8px; }
+  .how-desc{ color: var(--ink-dim); font-size: 13.5px; line-height: 1.55; }
+
+  /* ---------- PRICING ---------- */
+  .pricing-section{
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px 32px 100px;
+  }
+  .pricing-head{ text-align:center; margin-bottom: 40px; }
+  .pricing-head h2{
+    font-family:'Fraunces', serif;
+    font-size: clamp(26px, 3.5vw, 34px);
+    font-weight: 600;
+    margin: 0 0 10px;
+  }
+  .pricing-head p{ color: var(--ink-dim); font-size: 14.5px; }
+  .pricing-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 700px){ .pricing-grid{ grid-template-columns: 1fr; } }
+  .price-card{
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 30px 26px;
+    background: var(--bg-panel);
+    position: relative;
+  }
+  .price-card.featured{ border-color: var(--accent); background: var(--bg-raise); }
+  .price-badge{
+    position: absolute;
+    top: -11px;
+    left: 26px;
+    background: var(--accent);
+    color: #0F1015;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 9px;
+    border-radius: 2px;
+    font-weight: 600;
+  }
+  .price-tier{ font-family:'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-dim); margin-bottom: 10px; }
+  .price-amount{ font-family:'Fraunces', serif; font-size: 40px; font-weight: 700; margin-bottom: 4px; }
+  .price-amount span{ font-size: 15px; color: var(--ink-dim); font-family:'Space Grotesk', sans-serif; font-weight: 400; }
+  .price-desc{ color: var(--ink-dim); font-size: 13.5px; margin-bottom: 20px; }
+  .price-feats{ list-style: none; padding: 0; margin: 0 0 24px; display:flex; flex-direction:column; gap: 10px; }
+  .price-feats li{ font-size: 13.5px; display:flex; gap: 9px; align-items:flex-start; }
+  .price-feats li::before{ content: "—"; color: var(--accent); flex-shrink:0; }
+  .price-btn{
+    width:100%;
+    padding: 13px;
+    border-radius: 3px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .price-card.featured .price-btn{ background: var(--accent); color: #0F1015; border: none; }
+  .price-card:not(.featured) .price-btn{ background: none; border: 1px solid var(--line); color: var(--ink); }
+
+  /* ---------- APP (checker) ---------- */
+  .app-shell{ display: none; }
+  .app-shell.active{ display: block; }
+  main.app-main{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 40px 32px 80px;
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+  @media (max-width: 900px){ main.app-main{ grid-template-columns: 1fr; } }
+
+  .panel{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 28px;
+  }
+  .field-label{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-dim);
+    margin-bottom: 8px;
+  }
+  textarea{
+    width:100%;
+    background: #0F1015;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--ink);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    padding: 14px;
+    resize: vertical;
+    min-height: 100px;
+    margin-bottom: 20px;
+  }
+  textarea:focus, input:focus{ outline: none; border-color: var(--accent); }
+  textarea::placeholder{ color: #55575F; }
+
+  .upload-zone{
+    border: 1px dashed var(--line);
+    border-radius: 3px;
+    background: #0F1015;
+    padding: 18px;
+    text-align:center;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: border-color 0.15s ease;
+    position: relative;
+  }
+  .upload-zone:hover{ border-color: var(--accent); }
+  .upload-zone.has-image{ padding: 10px; }
+  .upload-zone img{ max-width: 100%; max-height: 220px; border-radius: 2px; display:block; margin: 0 auto; }
+  .upload-hint{ color: var(--ink-dim); font-size: 13px; }
+  .upload-hint .mono{ font-size: 11px; display:block; margin-top: 4px; }
+  input[type=file]{ display:none; }
+  .remove-img{
+    margin-top: 10px; background: none; border: 1px solid var(--line); color: var(--ink-dim);
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 6px 10px; border-radius: 2px; cursor:pointer;
+  }
+  .remove-img:hover{ color: var(--risk); border-color: var(--risk); }
+
+  input[type=text]{
+    width:100%;
+    background: #0F1015;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    color: var(--ink);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    padding: 12px 14px;
+    margin-bottom: 24px;
+  }
+
+  .run-btn{
+    width:100%;
+    background: var(--accent);
+    color: #0F1015;
+    border: none;
+    border-radius: 3px;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+  }
+  .run-btn:hover{ opacity: 0.88; }
+  .run-btn:active{ transform: scale(0.99); }
+  .run-btn:disabled{ opacity: 0.5; cursor: not-allowed; }
+
+  .trial-note{ margin-top: 14px; font-family:'JetBrains Mono', monospace; font-size: 11.5px; color: var(--ink-dim); text-align:center; }
+
+  .result-panel{ display:flex; flex-direction:column; }
+  .dial-wrap{ display:flex; align-items:center; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+  .dial{ position:relative; width:110px; height:110px; flex-shrink:0; }
+  .dial svg{ transform: rotate(-90deg); }
+  .dial-label{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+  .dial-score{ font-family:'Fraunces', serif; font-weight:700; font-size:26px; line-height:1; }
+  .dial-unit{ font-family:'JetBrains Mono', monospace; font-size:9px; color:var(--ink-dim); margin-top:2px; text-transform:uppercase; letter-spacing:0.08em; }
+
+  .verdict-title{ font-family:'Fraunces', serif; font-size: 20px; font-weight:600; margin: 0 0 4px; }
+  .verdict-sub{ color: var(--ink-dim); font-size: 13px; }
+
+  .empty-state{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; color: var(--ink-dim); padding: 40px 20px; min-height: 300px; }
+  .empty-glyph{ width: 46px; height: 46px; border: 1px solid var(--line); border-radius: 50%; display:flex; align-items:center; justify-content:center; margin-bottom: 16px; font-family:'Fraunces', serif; font-size: 20px; color: var(--ink-dim); }
+  .empty-state p{ font-size: 13.5px; max-width: 28ch; line-height:1.5; }
+
+  .flag-list{ display:flex; flex-direction:column; gap:14px; margin-bottom: 24px; }
+  .flag{ border-left: 2px solid var(--line); padding-left: 14px; }
+  .flag.sev-high{ border-color: var(--risk); }
+  .flag.sev-med{ border-color: var(--caution); }
+  .flag.sev-low{ border-color: var(--safe); }
+  .flag-head{ display:flex; align-items:center; gap:8px; margin-bottom: 3px; }
+  .flag-sev{ font-family:'JetBrains Mono', monospace; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.08em; padding: 2px 6px; border-radius: 2px; }
+  .sev-high .flag-sev{ background: rgba(196,72,60,0.15); color: var(--risk); }
+  .sev-med .flag-sev{ background: rgba(214,150,60,0.15); color: var(--caution); }
+  .sev-low .flag-sev{ background: rgba(91,158,107,0.15); color: var(--safe); }
+  .flag-title{ font-size: 14px; font-weight: 600; }
+  .flag-desc{ color: var(--ink-dim); font-size: 13px; line-height: 1.5; }
+
+  .rewrite-box{ background: #0F1015; border: 1px solid var(--line); border-radius: 3px; padding: 16px; margin-top: auto; }
+  .rewrite-label{ font-family:'JetBrains Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 8px; }
+  .rewrite-text{ font-size: 14px; line-height: 1.55; font-style: italic; font-family:'Fraunces', serif; }
+
+  .loading{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap: 14px; min-height: 300px; }
+  .loading .mono{ color: var(--ink-dim); font-size: 12px; }
+  .spinner{ width: 28px; height: 28px; border: 2px solid var(--line); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+
+  .trial-banner{
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 14px 32px 0;
+  }
+  .trial-banner-inner{
+    background: var(--bg-raise);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 12px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 13px;
+  }
+  .trial-banner-inner .mono{ color: var(--accent); }
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay{
+    display:none;
+    position: fixed; inset: 0;
+    background: rgba(10,10,13,0.7);
+    backdrop-filter: blur(3px);
+    z-index: 100;
+    align-items:center;
+    justify-content:center;
+    padding: 20px;
+  }
+  .modal-overlay.active{ display:flex; }
+  .modal-box{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 34px;
+    width: 100%;
+    max-width: 380px;
+  }
+  .modal-head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom: 22px; }
+  .modal-title{ font-family:'Fraunces', serif; font-size: 22px; font-weight: 600; }
+  .modal-close{ background:none; border:none; color: var(--ink-dim); font-size: 20px; cursor:pointer; line-height:1; }
+  .modal-close:hover{ color: var(--ink); }
+  .modal-sub{ color: var(--ink-dim); font-size: 13px; margin: -14px 0 20px; }
+  .modal-field{ margin-bottom: 16px; }
+  .modal-field label{ display:block; font-family:'JetBrains Mono', monospace; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-dim); margin-bottom: 7px; }
+  .modal-field input{ margin-bottom: 0; }
+  .modal-submit{
+    width: 100%;
+    background: var(--accent);
+    color: #0F1015;
+    border: none;
+    border-radius: 3px;
+    padding: 13px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 6px;
+  }
+  .modal-submit:hover{ opacity: 0.88; }
+  .modal-switch{ text-align:center; margin-top: 18px; font-size: 12.5px; color: var(--ink-dim); }
+  .modal-switch button{ background:none; border:none; color: var(--accent); cursor:pointer; font-size: 12.5px; padding: 0; }
+  .modal-plan-note{
+    font-family:'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-dim);
+    background: #0F1015;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 10px 12px;
+    margin-bottom: 18px;
+  }
+
+  footer{ text-align:center; color: var(--ink-dim); font-family:'JetBrains Mono', monospace; font-size: 11px; padding: 30px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wordmark" onclick="showLanding()">clear<span>check</span></div>
+  <div class="nav-right" id="navRight">
+    <button class="nav-btn ghost" onclick="openModal('login')">Log in</button>
+    <button class="nav-btn primary" onclick="openModal('signup')">Start free trial</button>
+  </div>
+</nav>
+
+<!-- ===== LANDING ===== -->
+<div id="landing">
+  <section class="hero-section">
+    <p class="eyebrow">Pre-post risk check</p>
+    <h1 class="hero">Would this post land <em>wrong?</em></h1>
+    <p class="hero-sub">Paste your caption, add the photo. Clearcheck reads both together and flags what could backfire — before your audience does.</p>
+    <div class="hero-cta">
+      <button class="btn-big primary" onclick="openModal('signup')">Start 3-day free trial</button>
+      <button class="btn-big secondary" onclick="scrollToPricing()">See pricing</button>
+    </div>
+    <p class="hero-note">no card required for the trial · cancel anytime</p>
+  </section>
+
+  <section class="how-section">
+    <div class="how-card">
+      <div class="how-num mono">01</div>
+      <div class="how-title">Paste it in</div>
+      <div class="how-desc">Caption, photo, and any context — a brand deal, sensitive timing, an ongoing situation.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num mono">02</div>
+      <div class="how-title">Get a real read</div>
+      <div class="how-desc">A risk score, specific flags on what could go sideways, and why — not generic advice.</div>
+    </div>
+    <div class="how-card">
+      <div class="how-num mono">03</div>
+      <div class="how-title">Post with confidence</div>
+      <div class="how-desc">Use the suggested rewrite or trust your own call — either way, you saw it coming.</div>
+    </div>
+  </section>
+
+  <section class="pricing-section" id="pricing">
+    <div class="pricing-head">
+      <h2>Pick your plan</h2>
+      <p>Every plan starts with a 3-day free trial. Cancel before it ends and you're not charged.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-tier">Standard</div>
+        <div class="price-amount">$9.99<span>/week</span></div>
+        <div class="price-desc">For creators who want a check before every post.</div>
+        <ul class="price-feats">
+          <li>Unlimited caption + photo checks</li>
+          <li>Risk score & flag breakdown</li>
+          <li>Suggested rewrites</li>
+        </ul>
+        <button class="price-btn" onclick="openModal('signup')">Start free trial</button>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">Most popular</div>
+        <div class="price-tier">Pro</div>
+        <div class="price-amount">$15.99<span>/week</span></div>
+        <div class="price-desc">For creators juggling brand deals and a full content calendar.</div>
+        <ul class="price-feats">
+          <li>Everything in Standard</li>
+          <li>Batch-check a full content calendar</li>
+          <li>Brand-deal-specific flags</li>
+          <li>Crisis mode for fast damage control</li>
+        </ul>
+        <button class="price-btn" onclick="openModal('signup')">Start free trial</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ===== APP (post-login) ===== -->
+<div class="app-shell" id="appShell">
+  <div class="trial-banner">
+    <div class="trial-banner-inner">
+      <span>Welcome<span id="welcomeName"></span> — your <span class="mono" id="planLabel">Standard</span> trial is active.</span>
+      <span class="mono" id="trialDays">3 days left</span>
+    </div>
+  </div>
+
+  <main class="app-main">
+    <div class="panel">
+      <p class="eyebrow" style="margin-bottom:6px;">Step 01 — Bring the post</p>
+      <h1 style="font-family:'Fraunces',serif; font-size:30px; font-weight:600; margin:0 0 14px; letter-spacing:-0.01em;">New check</h1>
+
+      <label class="field-label">Caption</label>
+      <textarea id="caption" placeholder="Paste your caption or post idea here..."></textarea>
+
+      <label class="field-label">Photo (optional)</label>
+      <div class="upload-zone" id="uploadZone">
+        <div id="uploadInner">
+          <div class="upload-hint">Click to upload an image<span class="mono">JPG, PNG — max 5MB</span></div>
+        </div>
+        <input type="file" id="fileInput" accept="image/*">
+      </div>
+
+      <label class="field-label">Anything I should know? (optional)</label>
+      <input type="text" id="context" placeholder="e.g. sponsored by a brand, sensitive timing, ongoing situation...">
+
+      <button class="run-btn" id="runBtn">Check this post</button>
+      <p class="trial-note">no data is saved or posted anywhere</p>
+    </div>
+
+    <div class="panel result-panel" id="resultPanel">
+      <div class="empty-state" id="emptyState">
+        <div class="empty-glyph">?</div>
+        <p>Your risk read will show up here once you run a check.</p>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>clearcheck — this is a prototype. login is simulated locally; no real accounts are created.</footer>
+
+<!-- ===== AUTH MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">Start your trial</div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <p class="modal-sub" id="modalSub">3 days free, then $9.99/week. Cancel anytime.</p>
+
+    <div id="planNoteWrap"></div>
+
+    <div class="modal-field">
+      <label>Name</label>
+      <input type="text" id="authName" placeholder="Your name">
+    </div>
+    <div class="modal-field">
+      <label>Email</label>
+      <input type="text" id="authEmail" placeholder="you@email.com">
+    </div>
+    <div class="modal-field">
+      <label>Password</label>
+      <input type="text" id="authPassword" placeholder="••••••••">
+    </div>
+
+    <button class="modal-submit" id="authSubmitBtn" onclick="submitAuth()">Create account & start trial</button>
+    <div class="modal-switch">
+      <span id="switchPrompt">Already have an account?</span>
+      <button onclick="switchModal()" id="switchBtn">Log in</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let modalMode = 'signup';
+  let session = null; // { name, email, plan }
+
+  function openModal(mode){
+    modalMode = mode;
+    document.getElementById('modalOverlay').classList.add('active');
+    updateModalCopy();
+  }
+  function closeModal(){ document.getElementById('modalOverlay').classList.remove('active'); }
+  function switchModal(){
+    modalMode = modalMode === 'signup' ? 'login' : 'signup';
+    updateModalCopy();
+  }
+  function updateModalCopy(){
+    const title = document.getElementById('modalTitle');
+    const sub = document.getElementById('modalSub');
+    const submitBtn = document.getElementById('authSubmitBtn');
+    const switchPrompt = document.getElementById('switchPrompt');
+    const switchBtn = document.getElementById('switchBtn');
+    const nameField = document.getElementById('authName').closest('.modal-field');
+
+    if(modalMode === 'signup'){
+      title.textContent = 'Start your trial';
+      sub.textContent = '3 days free, then $9.99/week. Cancel anytime.';
+      submitBtn.textContent = 'Create account & start trial';
+      switchPrompt.textContent = 'Already have an account?';
+      switchBtn.textContent = 'Log in';
+      nameField.style.display = 'block';
+    } else {
+      title.textContent = 'Welcome back';
+      sub.textContent = 'Log in to run a check.';
+      submitBtn.textContent = 'Log in';
+      switchPrompt.textContent = "Don't have an account?";
+      switchBtn.textContent = 'Start free trial';
+      nameField.style.display = 'none';
+    }
+  }
+
+  function scrollToPricing(){
+    document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function submitAuth(){
+    const name = document.getElementById('authName').value.trim();
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value.trim();
+
+    if(!email || !password){
+      alert('Enter an email and password to continue.');
+      return;
+    }
+    if(modalMode === 'signup' && !name){
+      alert('Enter your name to continue.');
+      return;
+    }
+
+    session = { name: name || email.split('@')[0], email, plan: 'Standard' };
+    closeModal();
+    enterApp();
+  }
+
+  function enterApp(){
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('appShell').classList.add('active');
+    document.getElementById('welcomeName').textContent = ', ' + session.name;
+    document.getElementById('planLabel').textContent = session.plan;
+
+    document.getElementById('navRight').innerHTML = `
+      <span class="nav-user">${session.email}</span>
+      <button class="nav-btn ghost" onclick="logOut()">Log out</button>
+    `;
+  }
+
+  function logOut(){
+    session = null;
+    document.getElementById('appShell').classList.remove('active');
+    document.getElementById('landing').style.display = 'block';
+    document.getElementById('navRight').innerHTML = `
+      <button class="nav-btn ghost" onclick="openModal('login')">Log in</button>
+      <button class="nav-btn primary" onclick="openModal('signup')">Start free trial</button>
+    `;
+  }
+
+  function showLanding(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ---------- CHECKER TOOL (same engine as before) ---------- */
+  const fileInput = document.getElementById('fileInput');
+  const uploadZone = document.getElementById('uploadZone');
+  const uploadInner = document.getElementById('uploadInner');
+  const runBtn = document.getElementById('runBtn');
+  const resultPanel = document.getElementById('resultPanel');
+  let imageData = null;
+
+  uploadZone.addEventListener('click', (e) => {
+    if(e.target.classList.contains('remove-img')) return;
+    fileInput.click();
+  });
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if(!file) return;
+    if(file.size > 5 * 1024 * 1024){ alert('Please choose an image under 5MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result;
+      const base64 = result.split(',')[1];
+      imageData = { base64, mediaType: file.type };
+      uploadZone.classList.add('has-image');
+      uploadInner.innerHTML = `<img src="${result}" alt="uploaded"><button class="remove-img" id="removeImg">remove image</button>`;
+      document.getElementById('removeImg').addEventListener('click', (e) => {
+        e.stopPropagation();
+        imageData = null;
+        fileInput.value = '';
+        uploadZone.classList.remove('has-image');
+        uploadInner.innerHTML = `<div class="upload-hint">Click to upload an image<span class="mono">JPG, PNG — max 5MB</span></div>`;
+      });
+    };
+    reader.readAsDataURL(file);
+  });
+
+  function scoreColor(score){
+    if(score <= 33) return getComputedStyle(document.documentElement).getPropertyValue('--safe').trim();
+    if(score <= 66) return getComputedStyle(document.documentElement).getPropertyValue('--caution').trim();
+    return getComputedStyle(document.documentElement).getPropertyValue('--risk').trim();
+  }
+  function verdictText(score){
+    if(score <= 33) return { title: 'Looks clear', sub: 'Low risk of blowback based on what you shared.' };
+    if(score <= 66) return { title: 'Worth a second look', sub: 'A few things could land wrong depending on your audience.' };
+    return { title: 'High risk — pause', sub: 'This has real potential to backfire. Read the flags below.' };
+  }
+  function renderDial(score){
+    const r = 46, c = 2 * Math.PI * r;
+    const pct = Math.max(0, Math.min(100, score)) / 100;
+    const color = scoreColor(score);
+    return `
+      <div class="dial">
+        <svg width="110" height="110">
+          <circle cx="55" cy="55" r="${r}" fill="none" stroke="#2A2C35" stroke-width="8"/>
+          <circle cx="55" cy="55" r="${r}" fill="none" stroke="${color}" stroke-width="8"
+            stroke-dasharray="${c}" stroke-dashoffset="${c * (1 - pct)}" stroke-linecap="round"/>
+        </svg>
+        <div class="dial-label">
+          <div class="dial-score" style="color:${color}">${score}</div>
+          <div class="dial-unit">risk score</div>
+        </div>
+      </div>
+    `;
+  }
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str || '';
+    return div.innerHTML;
+  }
+  function renderResult(data){
+    const v = verdictText(data.risk_score);
+    const flagsHtml = (data.flags || []).map(f => `
+      <div class="flag sev-${f.severity}">
+        <div class="flag-head">
+          <span class="flag-sev">${f.severity}</span>
+          <span class="flag-title">${escapeHtml(f.title)}</span>
+        </div>
+        <div class="flag-desc">${escapeHtml(f.description)}</div>
+      </div>
+    `).join('');
+
+    resultPanel.innerHTML = `
+      <div class="dial-wrap">
+        ${renderDial(data.risk_score)}
+        <div>
+          <div class="verdict-title">${escapeHtml(v.title)}</div>
+          <div class="verdict-sub">${escapeHtml(v.sub)}</div>
+        </div>
+      </div>
+      <div class="flag-list">${flagsHtml || '<div class="flag sev-low"><div class="flag-title">No specific flags</div><div class="flag-desc">Nothing stood out, but trust your own read too.</div></div>'}</div>
+      ${data.rewrite ? `
+      <div class="rewrite-box">
+        <div class="rewrite-label">Suggested rewrite</div>
+        <div class="rewrite-text">"${escapeHtml(data.rewrite)}"</div>
+      </div>` : ''}
+    `;
+  }
+
+  runBtn.addEventListener('click', async () => {
+    const caption = document.getElementById('caption').value.trim();
+    const context = document.getElementById('context').value.trim();
+
+    if(!caption && !imageData){ alert('Add a caption or a photo first.'); return; }
+
+    runBtn.disabled = true;
+    runBtn.textContent = 'Checking...';
+    resultPanel.innerHTML = `
+      <div class="loading">
+        <div class="spinner"></div>
+        <div class="mono">reading your post...</div>
+      </div>
+    `;
+
+    try {
+      const response = await fetch("/api/check", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          caption: caption,
+          context: context,
+          imageBase64: imageData ? imageData.base64 : null,
+          imageMediaType: imageData ? imageData.mediaType : null
+        })
+      });
+
+      const parsed = await response.json();
+
+      if(!response.ok){
+        throw new Error(parsed.error || 'Analysis failed.');
+      }
+
+      renderResult(parsed);
+    } catch(err) {
+      console.error(err);
+      resultPanel.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-glyph">!</div>
+          <p>Something went wrong reading your post. Try again in a moment.</p>
+        </div>
+      `;
+    } finally {
+      runBtn.disabled = false;
+      runBtn.textContent = 'Check this post';
+    }
+  });
+
+  updateModalCopy();
+</script>
+
+</body>
+</html>
